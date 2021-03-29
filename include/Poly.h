@@ -7,7 +7,9 @@ class Poly : public Function {
 
 private:
 
-    vector<float> m_coefficient;
+    std::vector<double> m_coefficient;
+    int checkDigits(double);
+
 
 public:
 
@@ -16,7 +18,7 @@ public:
 
     //constructors
     Poly();
-    Poly(std::vector<float>);
+    Poly(const std::vector<double>&);
     //get functions
 
     //set functions

@@ -1,6 +1,8 @@
 #ifndef FUNCTION_H
 #define FUNCTION_H
 #include <iostream>
+#include <sstream>
+#include <iomanip>
 #include <cmath>
 #include <vector>
 #include <string>

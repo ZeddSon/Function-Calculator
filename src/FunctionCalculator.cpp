@@ -12,18 +12,18 @@ FunctionCalculator::FunctionCalculator()
 
 void FunctionCalculator::runCalculator()
 {
-	auto run = true;
 
-	while (run)
+	while (m_run)
 	{
 		printList();
 		getAnswer();
-		runOperetion();
+		if(checkOp())
+			runOperetion();
 
 		m_userOperetion.clear();
 		m_arguments.clear();
 	}
-
+	std::cout << "Goodbye";
 }
 
 void FunctionCalculator::printList() const
@@ -52,6 +52,7 @@ void FunctionCalculator::getAnswer()
 
 	//create new line and get input
 	getline(std::cin , user_input);
+	std::cout << std::endl;
 
 	size_t pos = 0;
 
@@ -66,9 +67,6 @@ void FunctionCalculator::getAnswer()
 
 	//clear string
 	user_input.clear();
-
-
-	checkOp();
 }	
 
 void FunctionCalculator::help() const
@@ -85,7 +83,11 @@ void FunctionCalculator::help() const
 	std::endl << "comp(osite) num1 num2 - Creates a function that is the composition of" <<
 	std::endl << "function #num1 and function #num2" <<
 	std::endl << "log N num - Creates a function that computes log N of function #num" <<
-	std::endl << "del(ete) num - Deletes function #num from function list" << std::endl;
+	std::endl << "del(ete) num - Deletes function #num from function list" << 
+	std::endl << "help - Prints this help screen" << 
+	std::endl << "exit - Exits the program" << std::endl;
+	std::cout << std::endl;
+
 }
 
 
@@ -99,15 +101,20 @@ bool FunctionCalculator::checkOp()
 	{
 		return checkArguments();
 	}
-	else if (m_userOperetion.compare("del") == 0 && m_inputCheck.size() == 2)
+	else if (m_inputCheck[0].compare("del") == 0 && m_inputCheck.size() == 2)
 	{
 		return checkArguments();
-		
+
 	}
-	else if (m_userOperetion.compare("poly") == 0 && m_inputCheck.size() - 2 == std::stoi(m_inputCheck[1]))
+	else if (m_inputCheck[0].compare("poly") == 0 && (int)m_inputCheck.size() - 2 == std::stoi(m_inputCheck[1]))
+		{
+		return checkArguments();
+		}
+	else if ((m_inputCheck[0].compare("exit") == 0 || m_inputCheck[0].compare("help") == 0) && m_inputCheck.size() == 1) 
 	{
 		return checkArguments();
 	}
+
 	std::cout << "wrong input :( , try again" << std::endl;
 	return false;
 }
@@ -141,9 +148,8 @@ bool FunctionCalculator::checkArguments()
 				return false;
 			}
 		}
-
-		m_arguments.push_back(std::stod(arguments));
-		arguments.clear();
+			m_arguments.push_back(std::stod(arguments));
+			arguments.clear();
 	}
 
 	m_userOperetion = m_inputCheck[0];
@@ -165,13 +171,33 @@ int FunctionCalculator::getOp()
 	std::cout << m_function[m_arguments[0]]->calculateFunction(m_arguments[1]) << std::endl;
 	return -1;
 }
+FunctionCalculator::~FunctionCalculator()
+{
+	for (auto& i : m_function) {
+		delete i;
+	}
+	m_function.clear();
+}
 void FunctionCalculator::runOperetion()
 {
 	switch (getOp())
 	{
 	case(eEval):
 		if (m_function.size() > m_arguments[0])
-			std::cout << m_function[m_arguments[0]]->calculateFunction(m_arguments[1]) << std::endl;
+			std::cout << std::fixed << std::setprecision(2) << m_function[m_arguments[0]]->calculateFunction(m_arguments[1]) << std::endl;
 		break;
+	case(ePoly):
+		if (m_arguments[0] == m_arguments.size() - 1)
+		{
+			m_arguments.erase(m_arguments.begin(), m_arguments.begin()+1);
+			m_function.push_back(new Poly(m_arguments));
+		}
+		break;
+	case(eHelp):
+		help();
+		break;
+	case(eExit):
+		m_run = false;
+		return;
 	}
 }

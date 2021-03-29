@@ -2,10 +2,12 @@
 #define FUNCTIONCALCULATOR_H
 #include <memory>
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <vector>
 #include "Function.h"
 #include "Sin.h"
+#include "Poly.h"
 #include "NaturalLog.h"
 #include "Macros.h"
 
@@ -17,7 +19,8 @@ private:
     std::string m_userOperetion;
     std::vector<double> m_arguments;
     std::vector<std::string> m_inputCheck;
-    
+    bool m_run = true;
+
     enum stringOperetion {
         eEval,
         ePoly,
@@ -34,7 +37,7 @@ private:
     int getOp();
 public:
     //distructors
-    ~FunctionCalculator() = default;
+    ~FunctionCalculator();
 
     //constructors
     FunctionCalculator();
