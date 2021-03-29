@@ -32,7 +32,7 @@ void FunctionCalculator::printList() const
 
 	for (auto i = 0; i < m_function.size();i++) 
 	{
-		std::cout << i << ": " << m_function[i]->getFunctionName() << std::endl;
+		std::cout << i << ": " << m_function[i]->printFunctionName() << std::endl;
 	}
 
 	std::cout << "Please enter a command (\"help\" for command list): ";
@@ -191,6 +191,24 @@ void FunctionCalculator::runOperetion()
 		{
 			m_arguments.erase(m_arguments.begin(), m_arguments.begin()+1);
 			m_function.push_back(new Poly(m_arguments));
+		}
+		break;
+	case(eMul):
+		if (m_function.size() > m_arguments[0] && m_function.size() > m_arguments[1])
+		{
+			m_function.push_back(new MixedFunction(m_function[m_arguments[0]], m_function[m_arguments[1]], m_arguments[0], m_arguments[1],'*'));
+		}
+		break;
+	case(eAdd):
+		if (m_function.size() > m_arguments[0] && m_function.size() > m_arguments[1])
+		{
+			m_function.push_back(new MixedFunction(m_function[m_arguments[0]], m_function[m_arguments[1]], m_arguments[0], m_arguments[1], '+'));
+		}
+		break;
+	case(eComp):
+		if (m_function.size() > m_arguments[0] && m_function.size() > m_arguments[1])
+		{
+			m_function.push_back(new MixedFunction(m_function[m_arguments[0]],m_function[m_arguments[1]], m_arguments[0], m_arguments[1], 'o'));
 		}
 		break;
 	case(eHelp):

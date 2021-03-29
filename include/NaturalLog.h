@@ -1,7 +1,7 @@
 #ifndef NATURALLOG_H
 #define NATURALLOG_H
 #include "Function.h"
-
+#include "macros.h"
 
 class NaturalLog : public Function {
 
@@ -14,7 +14,7 @@ public:
     //constructors
     NaturalLog();
     //get functions
-
+    char getType() override { return NATURALLOG; }
     //set functions
 
     //calc

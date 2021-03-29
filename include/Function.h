@@ -14,7 +14,7 @@ class Function
 {
 private:
     
-    std::string m_functionName;
+    std::string m_functionName, m_arg, m_name;
 
 public:
 
@@ -23,13 +23,20 @@ public:
 
     //constructors
     Function() {};
-    Function(const std::string& name);
+    Function(const std::string& name, const std::string& = "x");
 
     //get functions
-    std::string getFunctionName() const;
+    virtual std::string printFunctionName();
+    virtual std::string getFunctionName();
+    virtual char getType()=0;
 
     //set functions
     void setFunctionName(const std::string& set);
+
+    std::string getArg() const;
+
+    //set functions
+    void setArg(const std::string& set);
 
     virtual double calculateFunction(const double& value) = 0;
 

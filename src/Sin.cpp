@@ -1,6 +1,6 @@
 #include "Sin.h"
 
-Sin::Sin() : Function("sin(x)") {}
+Sin::Sin() : Function("sin") {}
 
 
 double Sin::calculateFunction(const double& value) 

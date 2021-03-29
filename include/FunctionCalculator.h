@@ -9,6 +9,7 @@
 #include "Sin.h"
 #include "Poly.h"
 #include "NaturalLog.h"
+#include "MixedFunction.h"
 #include "Macros.h"
 
 class FunctionCalculator {

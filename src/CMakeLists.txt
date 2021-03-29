@@ -3,4 +3,5 @@
 								"Sin.cpp"
 								"FunctionCalculator.cpp"
 								"NaturalLog.cpp"
-								"poly.cpp")
+								"poly.cpp"
+								"MixedFunction.cpp")
