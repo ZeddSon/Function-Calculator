@@ -2,7 +2,7 @@
 
 
 
-MixedFunction::MixedFunction(const MixedFunction* other) :Function(other->getFunctionName())
+MixedFunction::MixedFunction(std::shared_ptr <MixedFunction> other) :Function(other->getFunctionName())
 {
     m_func1 = other->m_func1;
     m_func2 = other->m_func2;
@@ -10,42 +10,40 @@ MixedFunction::MixedFunction(const MixedFunction* other) :Function(other->getFun
     m_type = other->m_type; 
 }
 
-MixedFunction::MixedFunction(Function* func1, Function* func2,const int i,const int j, const char op):
-    m_operator(op),m_type(MIX)
+MixedFunction::MixedFunction(std::shared_ptr<Function> func1, std::shared_ptr<Function> func2,const int i,const int j, const char op):
+    m_operator(op),m_type(MIX),m_func1(func1),m_func2(func2)
 {	
-
-
-    switch (func1->getType()) {
+    
+    /*switch (func1->getType()) {
     case(MIX):
-        m_func1 = new MixedFunction((MixedFunction*)func1);
+        m_func1 = std::make_shared<MixedFunction>((MixedFunction&)func1);
         break;
     case(POLY):
-        m_func1 = new Poly((Poly*)func1);
+        m_func1 = std::make_shared<Poly>((Poly&)func1);
         //m_coefficient = m_func1->getCoeffiecnt();
         break;
     case(NATURALLOG):
-        m_func1 = new NaturalLog();
+        m_func1 = std::make_shared<NaturalLog>();
         break;
     case(SIN):
-        m_func1 = new Sin();
+        m_func1 = std::make_shared<Sin>();
         break;
     }
     //m_type = m_func1->getType();
-
     switch (func2->getType()) {
     case(MIX):
-        m_func2 = new MixedFunction((MixedFunction*)func2);
+        m_func2 = std::make_shared<MixedFunction>((MixedFunction&)func2);
         break;
     case(POLY):
-        m_func2 = new Poly((Poly*)func2);
+        m_func2 = std::make_shared<Poly>((Poly&)func2);
         break;
     case(NATURALLOG):
-        m_func2 = new NaturalLog();
+        m_func2 = std::make_shared<NaturalLog>();
         break;
     case(SIN):
-        m_func2 = new Sin();
+        m_func2 = std::make_shared<Sin>();
         break;
-    }
+    }*/
 
     initTitles();
 }
@@ -62,13 +60,13 @@ void MixedFunction::initTitles()
         setFunctionName("(" + m_func1->printFunctionName() + ")" + " " + m_operator + " " + "(" + m_func2->printFunctionName() + ")");
         break;
     case('o'):
-        m_func1->setArg("(" + m_func2->printFunctionName() + ")");
-        if (m_func1->getType() == POLY) {
-            setFunctionName(makeAsPoly());
-            break;
+        auto title = m_func1->printFunctionName();
+        size_t pos = 0;
+        while ((pos = title.find("x", pos)) != std::string::npos) {
+            title.replace(pos, 1,"(" + m_func2->printFunctionName()+")");
+            pos += m_func2->getFunctionName().length()+5;
         }
-        setFunctionName(m_func1->printFunctionName());
-        setArg("x");
+        setFunctionName(title);
         break;
     }
 }

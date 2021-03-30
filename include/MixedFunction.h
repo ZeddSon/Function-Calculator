@@ -11,7 +11,7 @@ class MixedFunction : public Function
 	
 private:
 	std::vector<double> m_coefficient;
-	Function *m_func1,*m_func2;
+	std::shared_ptr<Function> m_func1,m_func2;
 	char m_operator;
 
 	void initTitles();
@@ -22,8 +22,8 @@ private:
 
 
 public:
-	MixedFunction(const MixedFunction*);
-	MixedFunction(Function*, Function*, const int, const int,const char);
+	MixedFunction(std::shared_ptr <MixedFunction> other);
+	MixedFunction(std::shared_ptr<Function>, std::shared_ptr<Function>, const int, const int,const char);
 	virtual double calculateFunction(const double& value);
 	char getType() override { return m_type; }
 

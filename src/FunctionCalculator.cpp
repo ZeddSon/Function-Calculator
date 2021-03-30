@@ -7,6 +7,9 @@ FunctionCalculator::FunctionCalculator()
 	m_function.push_back(new Sin());
 	m_function.push_back(new NaturalLog());
 
+	m_func1.push_back(std::make_shared<Sin>());
+	m_func1.push_back(std::make_shared<NaturalLog>());
+
 	runCalculator();
 }
 
@@ -30,9 +33,9 @@ void FunctionCalculator::printList() const
 {
 	//prints the list of function with numbers
 
-	for (auto i = 0; i < m_function.size();i++) 
+	for (auto i = 0; i < m_func1.size();i++) 
 	{
-		std::cout << i << ": " << m_function[i]->printFunctionName() << std::endl;
+		std::cout << i << ": " << m_func1[i]->printFunctionName() << std::endl;
 	}
 
 	std::cout << "Please enter a command (\"help\" for command list): ";
@@ -166,6 +169,7 @@ int FunctionCalculator::getOp()
 	if (m_userOperetion == "mul") return eMul;
 	if (m_userOperetion == "comp") return eComp;
 	if (m_userOperetion == "poly") return ePoly;
+	if (m_userOperetion == "del") return eDel;
 	if (m_userOperetion == "help") return eHelp;
 	if (m_userOperetion == "exit") return eExit;
 	std::cout << m_function[m_arguments[0]]->calculateFunction(m_arguments[1]) << std::endl;
@@ -183,33 +187,38 @@ void FunctionCalculator::runOperetion()
 	switch (getOp())
 	{
 	case(eEval):
-		if (m_function.size() > m_arguments[0])
+		if (m_func1.size() > m_arguments[0])
 			std::cout << std::fixed << std::setprecision(2) << m_function[m_arguments[0]]->calculateFunction(m_arguments[1]) << std::endl;
 		break;
 	case(ePoly):
 		if (m_arguments[0] == m_arguments.size() - 1)
 		{
 			m_arguments.erase(m_arguments.begin(), m_arguments.begin()+1);
-			m_function.push_back(new Poly(m_arguments));
+			m_func1.push_back(std::make_shared<Poly>(m_arguments));
+			
 		}
 		break;
 	case(eMul):
-		if (m_function.size() > m_arguments[0] && m_function.size() > m_arguments[1])
+		if (m_func1.size() > m_arguments[0] && m_func1.size() > m_arguments[1])
 		{
-			m_function.push_back(new MixedFunction(m_function[m_arguments[0]], m_function[m_arguments[1]], m_arguments[0], m_arguments[1],'*'));
+			m_func1.push_back(std::make_shared<MixedFunction>(m_func1[m_arguments[0]], m_func1[m_arguments[1]], m_arguments[0], m_arguments[1], '*'));
 		}
 		break;
 	case(eAdd):
-		if (m_function.size() > m_arguments[0] && m_function.size() > m_arguments[1])
+		if (m_func1.size() > m_arguments[0] && m_func1.size() > m_arguments[1])
 		{
-			m_function.push_back(new MixedFunction(m_function[m_arguments[0]], m_function[m_arguments[1]], m_arguments[0], m_arguments[1], '+'));
+			m_func1.push_back(std::make_shared<MixedFunction>(m_func1[m_arguments[0]], m_func1[m_arguments[1]], m_arguments[0], m_arguments[1], '+'));
 		}
 		break;
 	case(eComp):
-		if (m_function.size() > m_arguments[0] && m_function.size() > m_arguments[1])
+		if (m_func1.size() > m_arguments[0] && m_func1.size() > m_arguments[1])
 		{
-			m_function.push_back(new MixedFunction(m_function[m_arguments[0]],m_function[m_arguments[1]], m_arguments[0], m_arguments[1], 'o'));
+			m_func1.push_back(std::make_shared<MixedFunction>(m_func1[(int)m_arguments[0]], m_func1[(int)m_arguments[1]], m_arguments[0], m_arguments[1], 'o'));
+
 		}
+		break;
+	case(eDel):
+		m_func1.erase(m_func1.begin() + m_arguments[0]);
 		break;
 	case(eHelp):
 		help();

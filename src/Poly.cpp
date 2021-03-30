@@ -3,7 +3,7 @@
 
 Poly::Poly():Function("0"),m_type(POLY){}
 
-Poly::Poly(const Poly* other) : Function("0") 
+Poly::Poly(std::shared_ptr<Poly> other) : Function("0") 
 {
 	m_coefficient = other->m_coefficient;
 	m_type = other->m_type;

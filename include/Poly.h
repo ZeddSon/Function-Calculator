@@ -19,7 +19,7 @@ public:
 
     //constructors
     Poly();
-    Poly(const Poly*);
+    Poly(const std::shared_ptr<Poly>);
     Poly(const std::vector<double>&);
     //get functions
     char getType() override { return m_type; }

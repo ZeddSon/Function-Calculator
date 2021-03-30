@@ -17,6 +17,7 @@ class FunctionCalculator {
 private:
 
     std::vector<Function*> m_function;
+    std::vector<std::shared_ptr<Function>> m_func1;
     std::string m_userOperetion;
     std::vector<double> m_arguments;
     std::vector<std::string> m_inputCheck;

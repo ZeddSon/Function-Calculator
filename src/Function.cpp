@@ -10,11 +10,14 @@ Function::Function(const std::string& name, const std::string&arg):m_arg(arg),m_
 
 std::string Function::printFunctionName()
 {
-	if (m_arg.compare("") == 0) {
+	if (m_arg.compare("") == 0|| getType()== MIX ) {
 		return getFunctionName();
 	}
 	return this->m_functionName + "(" + m_arg + ")";
 }
+
+
+
 std::vector<double> Function::getCoeffiecnt()
 {
 	return std::vector<double>();

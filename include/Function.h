@@ -7,6 +7,7 @@
 #include <vector>
 #include <string>
 #include <limits>
+#include "macros.h"
 
 class Sin;
 
