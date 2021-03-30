@@ -6,7 +6,7 @@
 class Sin : public Function {
 
 private:
-
+    char m_type;
 public:
     //distructors
     ~Sin() = default;
@@ -14,7 +14,7 @@ public:
     //constructors
     Sin();
     //get functions
-    char getType() override { return SIN; }
+    char getType() override { return m_type; }
     //set functions
 
     //calc

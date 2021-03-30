@@ -6,7 +6,7 @@
 class NaturalLog : public Function {
 
 private:
-
+    char m_type;
 public:
     //distructors
     ~NaturalLog() = default;
@@ -14,7 +14,7 @@ public:
     //constructors
     NaturalLog();
     //get functions
-    char getType() override { return NATURALLOG; }
+    char getType() override { return m_type; }
     //set functions
 
     //calc

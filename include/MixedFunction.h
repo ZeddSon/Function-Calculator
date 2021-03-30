@@ -10,18 +10,23 @@ class MixedFunction : public Function
 {
 	
 private:
+	std::vector<double> m_coefficient;
 	Function *m_func1,*m_func2;
 	char m_operator;
 
 	void initTitles();
 
+	std::string makeAsPoly();
+	char m_type;
+
 
 
 public:
-	MixedFunction(const MixedFunction&);
+	MixedFunction(const MixedFunction*);
 	MixedFunction(Function*, Function*, const int, const int,const char);
 	virtual double calculateFunction(const double& value);
-	char getType() override { return MIX; }
+	char getType() override { return m_type; }
+
 };
 
 

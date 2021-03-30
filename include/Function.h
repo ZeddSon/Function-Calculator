@@ -27,15 +27,14 @@ public:
 
     //get functions
     virtual std::string printFunctionName();
-    virtual std::string getFunctionName();
-    virtual char getType()=0;
-
-    //set functions
-    void setFunctionName(const std::string& set);
-
+    virtual char getType() = 0;
+    virtual std::vector<double> getCoeffiecnt();
+    
+    std::string getFunctionName()const;
     std::string getArg() const;
 
     //set functions
+    void setFunctionName(const std::string& set);
     void setArg(const std::string& set);
 
     virtual double calculateFunction(const double& value) = 0;
