@@ -64,7 +64,7 @@ void MixedFunction::initTitles()
         size_t pos = 0;
         while ((pos = title.find("x", pos)) != std::string::npos) {
             title.replace(pos, 1,"(" + m_func2->printFunctionName()+")");
-            pos += m_func2->getFunctionName().length()+5;
+            pos += m_func2->printFunctionName().length()+5;
         }
         setFunctionName(title);
         break;
