@@ -9,6 +9,7 @@
 #include "Sin.h"
 #include "Poly.h"
 #include "NaturalLog.h"
+#include "FunctionLog.h"
 #include "MixedFunction.h"
 #include "Macros.h"
 
@@ -31,12 +32,14 @@ private:
         eComp,
         eDel,
         eHelp,
-        eExit
+        eLog,
+        eExit,
+        eError
     };
 
     bool checkOp();
     bool checkArguments();
-    int getOp();
+    FunctionCalculator::stringOperetion getOp();
 public:
     //distructors
     ~FunctionCalculator();

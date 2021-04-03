@@ -25,6 +25,7 @@ void FunctionCalculator::runCalculator()
 
 		m_userOperetion.clear();
 		m_arguments.clear();
+		m_inputCheck.clear();
 	}
 	std::cout << "Goodbye";
 }
@@ -43,7 +44,7 @@ void FunctionCalculator::printList() const
 
 void FunctionCalculator::getAnswer()
 /*
-* seprerates thw words from the user's input and checks whether the input
+* seprerates the words from the user's input and checks whether the input
 * is valid
 */
 {
@@ -97,6 +98,9 @@ void FunctionCalculator::help() const
 
 
 bool FunctionCalculator::checkOp()
+/*
+* check if the operetion string and arguments sent by user are valid
+*/
 {
 	if ((m_inputCheck[0].compare("eval") == 0 || m_inputCheck[0].compare("mul") == 0
 		|| m_inputCheck[0].compare("add") == 0 || m_inputCheck[0].compare("comp") == 0 ||
@@ -104,15 +108,17 @@ bool FunctionCalculator::checkOp()
 	{
 		return checkArguments();
 	}
+
 	else if (m_inputCheck[0].compare("del") == 0 && m_inputCheck.size() == 2)
 	{
 		return checkArguments();
-
 	}
+
 	else if (m_inputCheck[0].compare("poly") == 0 && (int)m_inputCheck.size() - 2 == std::stoi(m_inputCheck[1]))
-		{
+	{
 		return checkArguments();
-		}
+	}
+
 	else if ((m_inputCheck[0].compare("exit") == 0 || m_inputCheck[0].compare("help") == 0) && m_inputCheck.size() == 1) 
 	{
 		return checkArguments();
@@ -123,6 +129,9 @@ bool FunctionCalculator::checkOp()
 }
 
 bool FunctionCalculator::checkArguments()
+/*
+* check if the arguments sent by the user are valid
+*/
 {
 	//for each argument string
 	std::string arguments = "";
@@ -156,10 +165,10 @@ bool FunctionCalculator::checkArguments()
 	}
 
 	m_userOperetion = m_inputCheck[0];
-	m_inputCheck.clear();
 	return true;
 }
-int FunctionCalculator::getOp()
+
+FunctionCalculator::stringOperetion FunctionCalculator::getOp()
 /*
 * returns the operetion
 */
@@ -170,10 +179,11 @@ int FunctionCalculator::getOp()
 	if (m_userOperetion == "comp") return eComp;
 	if (m_userOperetion == "poly") return ePoly;
 	if (m_userOperetion == "del") return eDel;
+	if (m_userOperetion == "log") return eLog;
 	if (m_userOperetion == "help") return eHelp;
 	if (m_userOperetion == "exit") return eExit;
 	std::cout << m_function[m_arguments[0]]->calculateFunction(m_arguments[1]) << std::endl;
-	return -1;
+	return eError;
 }
 FunctionCalculator::~FunctionCalculator()
 {
@@ -187,44 +197,71 @@ void FunctionCalculator::runOperetion()
 	switch (getOp())
 	{
 	case(eEval):
-		if (m_func1.size() > m_arguments[0])
-			std::cout << std::fixed << std::setprecision(2) << m_function[m_arguments[0]]->calculateFunction(m_arguments[1]) << std::endl;
+
+		if (m_func1.size() > m_arguments[0]) 
+		{
+			std::cout << std::fixed << std::setprecision(2) << m_func1[m_arguments[0]]->calculateFunction(m_arguments[1]) << std::endl;
+		}
 		break;
+
 	case(ePoly):
+
 		if (m_arguments[0] == m_arguments.size() - 1)
 		{
 			m_arguments.erase(m_arguments.begin(), m_arguments.begin()+1);
 			m_func1.push_back(std::make_shared<Poly>(m_arguments));
-			
 		}
+
 		break;
+
 	case(eMul):
+
 		if (m_func1.size() > m_arguments[0] && m_func1.size() > m_arguments[1])
 		{
 			m_func1.push_back(std::make_shared<MixedFunction>(m_func1[m_arguments[0]], m_func1[m_arguments[1]], m_arguments[0], m_arguments[1], '*'));
 		}
+
 		break;
+
 	case(eAdd):
+
 		if (m_func1.size() > m_arguments[0] && m_func1.size() > m_arguments[1])
 		{
 			m_func1.push_back(std::make_shared<MixedFunction>(m_func1[m_arguments[0]], m_func1[m_arguments[1]], m_arguments[0], m_arguments[1], '+'));
 		}
+
 		break;
+
 	case(eComp):
+
 		if (m_func1.size() > m_arguments[0] && m_func1.size() > m_arguments[1])
 		{
-			m_func1.push_back(std::make_shared<MixedFunction>(m_func1[(int)m_arguments[0]], m_func1[(int)m_arguments[1]], m_arguments[0], m_arguments[1], 'o'));
-
+			m_func1.push_back(std::make_shared<MixedFunction>(m_func1[(int)m_arguments[0]], m_func1[(int)m_arguments[1]]
+															, m_arguments[0], m_arguments[1], 'o'));
 		}
+
 		break;
-	case(eDel):
-		m_func1.erase(m_func1.begin() + m_arguments[0]);
-		break;
+
 	case(eHelp):
+
 		help();
 		break;
+
+	case(eDel):
+
+		m_func1.erase(m_func1.begin() + m_arguments[0]);
+		break;
+
+	case(eLog):
+
+		if (m_func1.size() > m_arguments[0])
+			m_func1.push_back(std::make_shared<FunctionLog>(m_func1[(int)m_arguments[0]], m_arguments[1]));
+		break;
+
 	case(eExit):
+
 		m_run = false;
 		return;
+
 	}
 }
