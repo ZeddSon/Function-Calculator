@@ -17,10 +17,7 @@ std::string Function::printFunctionName()
 
 
 
-std::vector<double> Function::getCoeffiecnt()
-{
-	return std::vector<double>();
-}
+
 std::string Function::getFunctionName() const
 {
 	return this->m_functionName;

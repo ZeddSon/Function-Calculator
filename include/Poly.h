@@ -11,7 +11,7 @@ private:
 
     std::vector<double> m_coefficient;
     char m_type;
-    int checkDigits(double);
+    int checkDigits(double); //digit counting
 public:
 
     //distructors
@@ -19,16 +19,15 @@ public:
 
     //constructors
     Poly();
-    Poly(const std::shared_ptr<Poly>);
+
     Poly(const std::vector<double>&);
     //get functions
     char getType() override { return m_type; }
-    std::vector<double> getCoeffiecnt() override;
     //set functions
 
     //calc
     double calculateFunction(const double& value)override;
-    std::string printFunctionName() override;
-    //std::string getFunctionName() ;
+    std::string printFunctionName() override; //creats title name and returns it
+
 };
 #endif

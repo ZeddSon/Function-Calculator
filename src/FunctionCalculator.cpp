@@ -3,14 +3,15 @@
 
 FunctionCalculator::FunctionCalculator()
 {
-	//allocate the default functions
+	//adding the default functions
+	m_function.push_back(std::make_shared<Sin>());
+	m_function.push_back(std::make_shared<NaturalLog>());
 
-	m_func1.push_back(std::make_shared<Sin>());
-	m_func1.push_back(std::make_shared<NaturalLog>());
-
-	runCalculator();
+	runCalculator(); 
 }
 
+
+//Main function , runs the calculator
 void FunctionCalculator::runCalculator()
 {
 
@@ -18,23 +19,24 @@ void FunctionCalculator::runCalculator()
 	{
 		printList();
 		getAnswer();
-		if(checkOp())
+		if(checkOp()) //checks user input
 			runOperetion();
 
-		m_userOperetion.clear();
+		//clear input, after used
 		m_arguments.clear();
 		m_inputCheck.clear();
 	}
-	std::cout << "Goodbye";
+	std::cout << "Goodbye"; //when exit
 }
 
 void FunctionCalculator::printList() const
 {
-	//prints the list of function with numbers
+	std::cout <<"============================================================"<< std::endl << "Menu: "  << std::endl;
 
-	for (auto i = 0; i < m_func1.size();i++) 
+	//prints the list of function with numbers
+	for (auto i = 0; i < m_function.size();i++) 
 	{
-		std::cout << i << ": " << m_func1[i]->printFunctionName() << std::endl;
+		std::cout << i << ": " << m_function[i]->printFunctionName() << std::endl;
 	}
 
 	std::cout << "Please enter a command (\"help\" for command list): ";
@@ -46,9 +48,6 @@ void FunctionCalculator::getAnswer()
 * is valid
 */
 {
-	//clears vector if used before
-	m_userOperetion.clear();
-
 	//to get answer from standard input
 	std::string user_input;
 
@@ -97,6 +96,7 @@ void FunctionCalculator::help() const
 
 bool FunctionCalculator::checkOp()
 {
+	// for each operator input size should be different , so any case need to be checked.
 	if ((m_inputCheck[0].compare("eval") == 0 || m_inputCheck[0].compare("mul") == 0
 		|| m_inputCheck[0].compare("add") == 0 || m_inputCheck[0].compare("comp") == 0 ||
 		m_inputCheck[0].compare("log") == 0) && m_inputCheck.size() == 3)
@@ -118,7 +118,7 @@ bool FunctionCalculator::checkOp()
 		return checkArguments();
 	}
 
-	std::cout << "wrong input :( , try again" << std::endl;
+	errorMsg(1);
 	return false;
 }
 
@@ -147,97 +147,109 @@ bool FunctionCalculator::checkArguments()
 
 			else
 			{
-				std::cout << "wrong input :( , try again" << std::endl;
+				errorMsg(4);
 				return false;
 			}
 		}
 			m_arguments.push_back(std::stod(arguments));
 			arguments.clear();
 	}
-
-	m_userOperetion = m_inputCheck[0];
-	
 	return true;
 }
-int FunctionCalculator::getOp()
+FunctionCalculator::stringOperetion FunctionCalculator::getOp()
 /*
 * returns the operetion
 */
 {
-	if (m_userOperetion == "eval") return eEval;
-	if (m_userOperetion == "add") return eAdd;
-	if (m_userOperetion == "mul") return eMul;
-	if (m_userOperetion == "comp") return eComp;
-	if (m_userOperetion == "poly") return ePoly;
-	if (m_userOperetion == "del") return eDel;
-	if (m_userOperetion == "log") return eLog;
-	if (m_userOperetion == "help") return eHelp;
-	if (m_userOperetion == "exit") return eExit;
-	std::cout << m_function[m_arguments[0]]->calculateFunction(m_arguments[1]) << std::endl;
-	return -1;
+	if (m_inputCheck[0] == "eval") return eEval;
+	if (m_inputCheck[0] == "add") return eAdd;
+	if (m_inputCheck[0] == "mul") return eMul;
+	if (m_inputCheck[0] == "comp") return eComp;
+	if (m_inputCheck[0] == "poly") return ePoly;
+	if (m_inputCheck[0] == "del") return eDel;
+	if (m_inputCheck[0] == "log") return eLog;
+	if (m_inputCheck[0] == "help") return eHelp;
+	if (m_inputCheck[0] == "exit") return eExit;
+	return eError;
 }
 
-FunctionCalculator::~FunctionCalculator()
-{
-	for (auto& i : m_function) {
-		delete i;
-	}
-	m_function.clear();
-}
+
 void FunctionCalculator::runOperetion()
 {
 	bool wrong_index = 0;
 	switch (getOp())
 	{
 	case(eEval):
-		if (m_func1.size() > m_arguments[0])
-			std::cout << "Your Answer:" << std::endl << nameArgVal() << " = " << std::fixed << std::setprecision(2) << m_func1[m_arguments[0]]->calculateFunction(m_arguments[1]) << std::endl << std::endl;
+		if (m_function.size() > m_arguments[0]) {
+			//prints the answer
+			std::cout << "Your Answer:" << std::endl << nameArgVal() << " = " << std::fixed << std::setprecision(2) << m_function[m_arguments[0]]->calculateFunction(m_arguments[1]) << std::endl << std::endl;
+			return;
+		}
 		break;
 	case(ePoly):
 		if (m_arguments[0] == m_arguments.size() - 1)
 		{
+			//creates a polinumial function
 			m_arguments.erase(m_arguments.begin(), m_arguments.begin()+1);
-			m_func1.push_back(std::make_shared<Poly>(m_arguments));
-			
+			m_function.push_back(std::make_shared<Poly>(m_arguments));
+			return;
 		}
 		break;
 	case(eMul):
-		if (m_func1.size() > m_arguments[0] && m_func1.size() > m_arguments[1])
+		//function multiplication
+		if (m_function.size() > m_arguments[0] && m_function.size() > m_arguments[1])
 		{
-			m_func1.push_back(std::make_shared<MixedFunction>(m_func1[m_arguments[0]], m_func1[m_arguments[1]], m_arguments[0], m_arguments[1], '*'));
+			m_function.push_back(std::make_shared<MixedFunction>(m_function[m_arguments[0]], m_function[m_arguments[1]], m_arguments[0], m_arguments[1], '*'));
+			return;
 		}
 		break;
 	case(eAdd):
-		if (m_func1.size() > m_arguments[0] && m_func1.size() > m_arguments[1])
+		//sum of functions
+		if (m_function.size() > m_arguments[0] && m_function.size() > m_arguments[1])
 		{
-			m_func1.push_back(std::make_shared<MixedFunction>(m_func1[m_arguments[0]], m_func1[m_arguments[1]], m_arguments[0], m_arguments[1], '+'));
+			m_function.push_back(std::make_shared<MixedFunction>(m_function[m_arguments[0]], m_function[m_arguments[1]], m_arguments[0], m_arguments[1], '+'));
+			return;
 		}
 		break;
 	case(eComp):
-		if (m_func1.size() > m_arguments[0] && m_func1.size() > m_arguments[1])
+		//composite functions
+		if (m_function.size() > m_arguments[0] && m_function.size() > m_arguments[1])
 		{
-			m_func1.push_back(std::make_shared<MixedFunction>(m_func1[(int)m_arguments[0]], m_func1[(int)m_arguments[1]], m_arguments[0], m_arguments[1], 'o'));
+			m_function.push_back(std::make_shared<MixedFunction>(m_function[(int)m_arguments[0]], m_function[(int)m_arguments[1]], m_arguments[0], m_arguments[1], 'o'));
+			return;
 		}
 		break;
 	case(eLog):
-		if (m_func1.size() > m_arguments[1])
+		//creats log of function with choosen base
+		if (m_arguments[0] < 0) {
+			errorMsg(3);
+			return;
+		}
+		if (m_function.size() > m_arguments[1] &&  m_arguments[1] >= 0)
 		{
-			m_func1.push_back(std::make_shared<NaturalLog>(m_arguments[0],m_func1[(int)m_arguments[1]]));
+			m_function.push_back(std::make_shared<NaturalLog>(m_arguments[0],m_function[(int)m_arguments[1]]));
+			return;
 		}
 		break;
+		
 	case(eDel):
-		m_func1.erase(m_func1.begin() + m_arguments[0]);
+		//delete function
+		if (m_function.size() > m_arguments[0] && m_arguments[0] >= 0) {
+			m_function.erase(m_function.begin() + m_arguments[0]);
+			std::cout << "Function number #" << int(m_arguments[0]) << " has been deleted successfully" << std::endl << std::endl;
+			return;
+		}
 		break;
 	case(eHelp):
+		//prints help menu
 		help();
-		break;
+		return;
 	case(eExit):
+		//quit the calculator
 		m_run = false;
 		return;
 	}
-	if (wrong_index) {
-		std::cout << "Wrong index :(" << std::endl;
-	}
+	errorMsg(2);
 }
 
 
@@ -247,11 +259,31 @@ std::string FunctionCalculator::nameArgVal()
 	precision << m_arguments[1];
 	auto valuePer = precision.str();
 
-	auto title = m_func1[m_arguments[0]]->printFunctionName();
+	auto title = m_function[m_arguments[0]]->printFunctionName();
 	size_t pos = 0;
+	
+	//replace x with the value
 	while ((pos = title.find("x", pos)) != std::string::npos) {
 		title.replace(pos, 1, "(" + valuePer + ")");
 		pos++;
 	}
 	return title;
+}
+
+void FunctionCalculator::errorMsg(int i) {
+	switch (i)
+	{
+	case(1):
+		std::cout << "wrong input :( , try again" << std::endl;
+		break;
+	case(2):
+		std::cout << "Wrong index :(" << std::endl;
+		break;
+	case(3):
+		std::cout << "Base must be positive" << std::endl;
+		break;
+	case(4):
+		std::cout << "wrong arguments input :( , try again" << std::endl;
+		break;
+	}
 }

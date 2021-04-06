@@ -14,8 +14,9 @@ public:
     ~NaturalLog() = default;
 
     //constructors
-    NaturalLog();
-    NaturalLog(double, std::shared_ptr<Function>);
+    NaturalLog(); //for log with base 'e'
+    NaturalLog(double, std::shared_ptr<Function>); //for log with other base
+
     //get functions
     char getType() override { return m_type; }
     //set functions

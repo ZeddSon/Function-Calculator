@@ -6,7 +6,6 @@
 /// <returns></returns>
 
 int main() {
-	
 
 	FunctionCalculator a;
 	return 0;

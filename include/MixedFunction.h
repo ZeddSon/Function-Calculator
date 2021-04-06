@@ -14,18 +14,18 @@ private:
 	std::vector<double> m_coefficient;
 	std::shared_ptr<Function> m_func1,m_func2;
 	char m_operator;
-
-	void initTitles();
-
-	std::string makeAsPoly();
 	char m_type;
 
-
+	void initTitles(); //creates the title of the composite function
 
 public:
-	MixedFunction(std::shared_ptr <MixedFunction> other);
+	//constructors
 	MixedFunction(std::shared_ptr<Function>, std::shared_ptr<Function>, const int, const int,const char);
+
+	//calculate function
 	virtual double calculateFunction(const double& value);
+
+	//get function
 	char getType() override { return m_type; }
 
 };

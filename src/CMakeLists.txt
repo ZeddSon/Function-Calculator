@@ -5,4 +5,4 @@
 								"NaturalLog.cpp"
 								"poly.cpp"
 								"MixedFunction.cpp"
-								"FunctionLog.cpp")
+								)

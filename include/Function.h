@@ -23,16 +23,14 @@ public:
     ~Function() = default;
 
     //constructors
-    Function() {};
-    Function(const std::string& name, const std::string& = "x");
+    Function() {}; //default constructor function 
+    Function(const std::string& name, const std::string& = "x"); // constructor for differents arguments
 
     //get functions
     virtual std::string printFunctionName(); //returns function full name
-    virtual char getType() = 0;
-    virtual std::vector<double> getCoeffiecnt(); //gets
-    
+    virtual char getType() = 0; 
     std::string getFunctionName()const;
-    std::string getArg() const;
+    std::string getArg() const; //gets the argument value
 
     //set functions
     void setFunctionName(const std::string& set);
