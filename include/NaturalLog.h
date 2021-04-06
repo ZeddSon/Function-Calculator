@@ -7,12 +7,15 @@ class NaturalLog : public Function {
 
 private:
     char m_type;
+    double m_base;
+    std::shared_ptr<Function> m_func;
 public:
     //distructors
     ~NaturalLog() = default;
 
     //constructors
     NaturalLog();
+    NaturalLog(double, std::shared_ptr<Function>);
     //get functions
     char getType() override { return m_type; }
     //set functions

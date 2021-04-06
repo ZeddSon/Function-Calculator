@@ -27,9 +27,9 @@ public:
     Function(const std::string& name, const std::string& = "x");
 
     //get functions
-    virtual std::string printFunctionName();
+    virtual std::string printFunctionName(); //returns function full name
     virtual char getType() = 0;
-    virtual std::vector<double> getCoeffiecnt();
+    virtual std::vector<double> getCoeffiecnt(); //gets
     
     std::string getFunctionName()const;
     std::string getArg() const;

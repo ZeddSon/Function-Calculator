@@ -3,7 +3,6 @@
 Function::Function(const std::string& name, const std::string&arg):m_arg(arg),m_name(name)
 {
 	m_functionName = name;
-	
 }
 
 

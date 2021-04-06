@@ -13,38 +13,6 @@ MixedFunction::MixedFunction(std::shared_ptr <MixedFunction> other) :Function(ot
 MixedFunction::MixedFunction(std::shared_ptr<Function> func1, std::shared_ptr<Function> func2,const int i,const int j, const char op):
     m_operator(op),m_type(MIX),m_func1(func1),m_func2(func2)
 {	
-    
-    /*switch (func1->getType()) {
-    case(MIX):
-        m_func1 = std::make_shared<MixedFunction>((MixedFunction&)func1);
-        break;
-    case(POLY):
-        m_func1 = std::make_shared<Poly>((Poly&)func1);
-        //m_coefficient = m_func1->getCoeffiecnt();
-        break;
-    case(NATURALLOG):
-        m_func1 = std::make_shared<NaturalLog>();
-        break;
-    case(SIN):
-        m_func1 = std::make_shared<Sin>();
-        break;
-    }
-    //m_type = m_func1->getType();
-    switch (func2->getType()) {
-    case(MIX):
-        m_func2 = std::make_shared<MixedFunction>((MixedFunction&)func2);
-        break;
-    case(POLY):
-        m_func2 = std::make_shared<Poly>((Poly&)func2);
-        break;
-    case(NATURALLOG):
-        m_func2 = std::make_shared<NaturalLog>();
-        break;
-    case(SIN):
-        m_func2 = std::make_shared<Sin>();
-        break;
-    }*/
-
     initTitles();
 }
 

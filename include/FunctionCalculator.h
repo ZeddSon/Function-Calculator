@@ -29,6 +29,7 @@ private:
         eMul,
         eAdd,
         eComp,
+        eLog,
         eDel,
         eHelp,
         eExit
@@ -37,6 +38,7 @@ private:
     bool checkOp();
     bool checkArguments();
     int getOp();
+    std::string nameArgVal();
 public:
     //distructors
     ~FunctionCalculator();

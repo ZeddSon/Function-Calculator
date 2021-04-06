@@ -4,8 +4,6 @@
 FunctionCalculator::FunctionCalculator()
 {
 	//allocate the default functions
-	m_function.push_back(new Sin());
-	m_function.push_back(new NaturalLog());
 
 	m_func1.push_back(std::make_shared<Sin>());
 	m_func1.push_back(std::make_shared<NaturalLog>());
@@ -25,6 +23,7 @@ void FunctionCalculator::runCalculator()
 
 		m_userOperetion.clear();
 		m_arguments.clear();
+		m_inputCheck.clear();
 	}
 	std::cout << "Goodbye";
 }
@@ -113,6 +112,7 @@ bool FunctionCalculator::checkOp()
 		{
 		return checkArguments();
 		}
+
 	else if ((m_inputCheck[0].compare("exit") == 0 || m_inputCheck[0].compare("help") == 0) && m_inputCheck.size() == 1) 
 	{
 		return checkArguments();
@@ -156,7 +156,7 @@ bool FunctionCalculator::checkArguments()
 	}
 
 	m_userOperetion = m_inputCheck[0];
-	m_inputCheck.clear();
+	
 	return true;
 }
 int FunctionCalculator::getOp()
@@ -170,11 +170,13 @@ int FunctionCalculator::getOp()
 	if (m_userOperetion == "comp") return eComp;
 	if (m_userOperetion == "poly") return ePoly;
 	if (m_userOperetion == "del") return eDel;
+	if (m_userOperetion == "log") return eLog;
 	if (m_userOperetion == "help") return eHelp;
 	if (m_userOperetion == "exit") return eExit;
 	std::cout << m_function[m_arguments[0]]->calculateFunction(m_arguments[1]) << std::endl;
 	return -1;
 }
+
 FunctionCalculator::~FunctionCalculator()
 {
 	for (auto& i : m_function) {
@@ -184,11 +186,12 @@ FunctionCalculator::~FunctionCalculator()
 }
 void FunctionCalculator::runOperetion()
 {
+	bool wrong_index = 0;
 	switch (getOp())
 	{
 	case(eEval):
 		if (m_func1.size() > m_arguments[0])
-			std::cout << std::fixed << std::setprecision(2) << m_function[m_arguments[0]]->calculateFunction(m_arguments[1]) << std::endl;
+			std::cout << "Your Answer:" << std::endl << nameArgVal() << " = " << std::fixed << std::setprecision(2) << m_func1[m_arguments[0]]->calculateFunction(m_arguments[1]) << std::endl << std::endl;
 		break;
 	case(ePoly):
 		if (m_arguments[0] == m_arguments.size() - 1)
@@ -214,7 +217,12 @@ void FunctionCalculator::runOperetion()
 		if (m_func1.size() > m_arguments[0] && m_func1.size() > m_arguments[1])
 		{
 			m_func1.push_back(std::make_shared<MixedFunction>(m_func1[(int)m_arguments[0]], m_func1[(int)m_arguments[1]], m_arguments[0], m_arguments[1], 'o'));
-
+		}
+		break;
+	case(eLog):
+		if (m_func1.size() > m_arguments[1])
+		{
+			m_func1.push_back(std::make_shared<NaturalLog>(m_arguments[0],m_func1[(int)m_arguments[1]]));
 		}
 		break;
 	case(eDel):
@@ -227,4 +235,23 @@ void FunctionCalculator::runOperetion()
 		m_run = false;
 		return;
 	}
+	if (wrong_index) {
+		std::cout << "Wrong index :(" << std::endl;
+	}
+}
+
+
+std::string FunctionCalculator::nameArgVal()
+{
+	std::ostringstream precision;
+	precision << m_arguments[1];
+	auto valuePer = precision.str();
+
+	auto title = m_func1[m_arguments[0]]->printFunctionName();
+	size_t pos = 0;
+	while ((pos = title.find("x", pos)) != std::string::npos) {
+		title.replace(pos, 1, "(" + valuePer + ")");
+		pos++;
+	}
+	return title;
 }
