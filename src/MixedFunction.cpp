@@ -1,8 +1,6 @@
 #include "MixedFunction.h"
 
-
-
-MixedFunction::MixedFunction(std::shared_ptr <MixedFunction> other) :Function(other->getFunctionName())
+MixedFunction::MixedFunction(std::shared_ptr <MixedFunction> other) : Function(other->getFunctionName())
 {
     m_func1 = other->m_func1;
     m_func2 = other->m_func2;
@@ -16,24 +14,31 @@ MixedFunction::MixedFunction(std::shared_ptr<Function> func1, std::shared_ptr<Fu
     initTitles();
 }
 
-
 void MixedFunction::initTitles()
 {
     switch (m_operator)
     {
     case('+'):
+
         setFunctionName(m_func1->printFunctionName() + " " + m_operator + " " + m_func2->printFunctionName());
         break;
+
     case('*'):
+
         setFunctionName("(" + m_func1->printFunctionName() + ")" + " " + m_operator + " " + "(" + m_func2->printFunctionName() + ")");
         break;
+
     case('o'):
+
         auto title = m_func1->printFunctionName();
         size_t pos = 0;
-        while ((pos = title.find("x", pos)) != std::string::npos) {
+
+        while ((pos = title.find("x", pos)) != std::string::npos) 
+        {
             title.replace(pos, 1,"(" + m_func2->printFunctionName()+")");
             pos += m_func2->printFunctionName().length()+5;
         }
+
         setFunctionName(title);
         break;
     }
@@ -45,16 +50,20 @@ double MixedFunction::calculateFunction(const double& value)
     switch (m_operator) 
     {
     case('+'):
+
         return m_func1->calculateFunction(value) + m_func2->calculateFunction(value);
+
     case('*'):
+
         return m_func1->calculateFunction(value) * m_func2->calculateFunction(value);
+
     case('o'):
+
         return m_func1->calculateFunction(m_func2->calculateFunction(value));
+
     }
     return 0;
 }
 
-std::string MixedFunction::makeAsPoly() {
-    return m_func1->printFunctionName();
-}
+std::string MixedFunction::makeAsPoly() {return m_func1->printFunctionName();}
 

@@ -1,5 +1,6 @@
 #ifndef MIXEDFUNCTION_H
 #define MIXEDFUNCTION_H
+
 #include "Function.h"
 #include "macros.h"
 #include "Poly.h"
@@ -28,9 +29,5 @@ public:
 	char getType() override { return m_type; }
 
 };
-
-
-
-
 
 #endif
