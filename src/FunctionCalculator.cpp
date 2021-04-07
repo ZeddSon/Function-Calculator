@@ -264,7 +264,7 @@ std::string FunctionCalculator::nameArgVal()
 	
 	//replace x with the value
 	while ((pos = title.find("x", pos)) != std::string::npos) {
-		title.replace(pos, 1, "(" + valuePer + ")");
+		title.replace(pos, 1, valuePer);
 		pos++;
 	}
 	return title;
