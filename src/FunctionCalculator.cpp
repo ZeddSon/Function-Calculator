@@ -108,7 +108,7 @@ bool FunctionCalculator::checkOp()
 		return checkArguments();
 
 	}
-	else if (m_inputCheck[0].compare("poly") == 0 && (int)m_inputCheck.size() > 1 && (int)m_inputCheck.size() - 2 == std::stoi(m_inputCheck[1]))
+	else if (m_inputCheck[0].compare("poly") == 0 && (int)m_inputCheck.size() - 2 == std::stoi(m_inputCheck[1]))
 		{
 		return checkArguments();
 		}
